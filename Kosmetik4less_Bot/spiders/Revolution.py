@@ -10,11 +10,17 @@ class CatriceSpider(scrapy.Spider):
 
     def parse(self, response):
         item = Kosmetik4LessBotItem()
-        item['img'] = response.css("a.product-card__container img ::attr(data-src)").extract_first()
-        item['name'] = response.css("p.product-card__name::text")[0].extract()
+        names = response.css("p.product-card__name::text").extract()
+        imgs = response.css("a.product-card__container img ::attr(data-src)").extract()
+        for img in imgs:
+            item['img'] = img
+        for name in names: 
+            item['name'] = name
         yield item
-        next_page_url = response.css("li.page-item > a.page-link::attr(href)")[4].extract()
-        if next_page_url:
+        base_url = "https://www.kosmetik4less.de/en/makeup-revolution?page={}"
+#         next_page_url = response.css("li.page-item > a.page-link::attr(href)")[4].extract()
+        for i in range(2,16):
+            next_page_url = base_url.format(i)
             yield scrapy.Request(url = next_page_url,callback=self.parse)
 
 
