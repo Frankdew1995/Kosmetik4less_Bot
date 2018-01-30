@@ -11,7 +11,7 @@ class CatriceSpider(scrapy.Spider):
     def parse(self, response):
 
         item = Kosmetik4LessBotItem()
-        for product, price in response.css("div.product-card__image.desktop") and response.css("div.product-card__prices"):
+        for product, price in response.css("div.product-card__image.desktop"), response.css("div.product-card__prices"):
 
             item['img'] = product.css("img.lazyload::attr(data-src)").extract_first()
             item['name'] = product.css("img.lazyload::attr(alt)")[0].extract()
