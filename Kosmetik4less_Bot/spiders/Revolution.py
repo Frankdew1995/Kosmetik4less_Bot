@@ -16,6 +16,11 @@ class CatriceSpider(scrapy.Spider):
             item['img'] = product.css("img.lazyload::attr(data-src)").extract_first()
             item['name'] = product.css("img.lazyload::attr(alt)")[0].extract()
             yield item
+            
+        for price in response.css("div.product-card__prices"):
+            
+            item['price'] = price.css("strong.product-card__price::text").extract_first()
+            yield item
 
         base_url = "https://www.kosmetik4less.de/en/makeup-revolution?page={}"
 
@@ -23,5 +28,3 @@ class CatriceSpider(scrapy.Spider):
 
             next_page_url = base_url.format(i)
             yield scrapy.Request(url=next_page_url, callback=self.parse)
-
-
