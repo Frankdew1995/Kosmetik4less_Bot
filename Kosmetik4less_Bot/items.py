@@ -12,4 +12,6 @@ class Kosmetik4LessBotItem(scrapy.Item):
     name = scrapy.Field()
     img = scrapy.Field()
     price = scrapy.Field()
+    code = scrapy.Field()
+    
 
