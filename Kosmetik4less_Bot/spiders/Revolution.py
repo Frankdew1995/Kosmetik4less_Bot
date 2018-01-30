@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-# from Kosmetik4less_Bot.items import Kosmetik4LessBotItem
+from Kosmetik4less_Bot.items import Kosmetik4LessBotItem
 
 
 class CatriceSpider(scrapy.Spider):
