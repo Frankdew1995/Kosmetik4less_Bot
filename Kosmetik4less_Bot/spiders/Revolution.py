@@ -10,18 +10,13 @@ class CatriceSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        item = Kosmetik4LessBotItem()
-        for product, price in response.css("div.product-card__image.desktop"), response.css("div.product-card__prices"):
+        urls = response.css("a.product-card__container::attr(href)").extract()
 
-            item['img'] = product.css("img.lazyload::attr(data-src)").extract_first()
-            item['name'] = product.css("img.lazyload::attr(alt)")[0].extract()
-            item['price'] = price.css("strong.product-card__price::text").extract_first()
-            yield item
+        for url in urls:
             
-#         for price in response.css("div.product-card__prices"):
             
-#             item['price'] = price.css("strong.product-card__price::text").extract_first()
-#             yield item
+            yield scrapy.Request(url =url, callback = self.parse_details)
+
 
         base_url = "https://www.kosmetik4less.de/en/makeup-revolution?page={}"
 
@@ -29,3 +24,16 @@ class CatriceSpider(scrapy.Spider):
 
             next_page_url = base_url.format(i)
             yield scrapy.Request(url=next_page_url, callback=self.parse)
+            
+    def parse_details(self, response):
+        item = Kosmetik4LessBotItem()
+        item['img'] = response.css("img.product-image::attr(src)").extract_first()
+        item['price'] = response.css('span.h1::text').extract_first()
+        item['name'] = response.css("h1::text").extract_first()
+        yield item
+        
+
+        
+        
+        
+        
