@@ -11,4 +11,5 @@ class Kosmetik4LessBotItem(scrapy.Item):
     # define the fields for your item here like:
     name = scrapy.Field()
     img = scrapy.Field()
+    price = scrapy.Field()
 
